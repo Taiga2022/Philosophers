@@ -1,8 +1,18 @@
 [
-{
-  "directory": "/home/taiga/practice/42/Philosophers/philo",
-  "command": "/usr/bin/cc -Wall -Wextra -Werror -Iincludes -c -o objs/philo.o src/philo.c",
-  "file": "/home/taiga/practice/42/Philosophers/philo/src/philo.c",
-  "output": "/home/taiga/practice/42/Philosophers/philo/objs/philo.o"
-}
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Iincludes",
+      "-c",
+      "-o",
+      "objs/philo.o",
+      "src/philo.c"
+    ],
+    "directory": "/home/taiga/practice/42/Philosophers/philo",
+    "file": "/home/taiga/practice/42/Philosophers/philo/src/philo.c",
+    "output": "/home/taiga/practice/42/Philosophers/philo/objs/philo.o"
+  }
 ]

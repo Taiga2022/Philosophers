@@ -12,4 +12,14 @@
 #include <errno.h>      /* errno */
 #include <pthread.h>    /* pthread_create/join/detach and mutex APIs */
 
+typedef enum e_bool
+{
+	FALSE = 0,
+	TRUE = 1
+}				t_bool;
+
+void	ft_putstr_fd(char *s, int fd);
+
+int	ft_atoi(const char *nptr);
+
 #endif //PHILO_H
