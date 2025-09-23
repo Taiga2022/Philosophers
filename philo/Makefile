@@ -46,6 +46,38 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@echo "🔧 Compiled: $<"
 
 # ========================
+#    DEBUG / SANITIZER
+# ========================
+asan: CFLAGS += -g -fsanitize=address
+
+asan: re
+	@echo "🚀 Running with AddressSanitizer"
+	./$(NAME) 5 800 200 200
+
+tsan: CFLAGS += -g -fsanitize=thread
+tsan: re
+	@echo "🚀 Running with ThreadSanitizer"
+	./$(NAME) 5 800 200 200
+
+debug: CFLAGS += -g
+debug: re
+	@echo "🚀 Debug build ready (use gdb/lldb)"
+
+valgrind: re
+	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) 5 800 200 200
+
+# ========================
+#    TEST / RUN HELPERS
+# ========================
+run: all
+	./$(NAME) 5 800 200 200
+
+test: all
+	./$(NAME) 2 300 100 100
+	./$(NAME) 5 800 200 200
+	./$(NAME) 5 800 200 200 7
+
+# ========================
 #       CLEANING
 # ========================
 
@@ -62,4 +94,4 @@ re: fclean all
 # ========================
 #        PHONY
 # ========================
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re asan tsan debug run test valgrind
