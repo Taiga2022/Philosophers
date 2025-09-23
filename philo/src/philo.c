@@ -1,9 +1,34 @@
 #include "philo.h"
 
 
-int	main(int argc, char *argv[])
+t_bool init_main(int argc, char *argv[], t_rules *rules)
 {
-    (void)argv;
+    rules->n_philo = ft_atoi(argv[1]);
+    rules->time_to_die = ft_atoi(argv[2]);
+    rules->time_to_eat = ft_atoi(argv[3]);
+    rules->time_to_sleep = ft_atoi(argv[4]);
+
+    if (argc == 6)
+    {
+        rules->eat_count = ft_atoi(argv[5]);
+        if (rules->eat_count <= 0)
+            return FALSE;
+    }
+    else
+        rules->eat_count = -1;
+
+    if (rules->n_philo <= 0 || rules->time_to_die <= 0 ||
+        rules->time_to_eat <= 0 || rules->time_to_sleep <= 0)
+        return FALSE;
+
+    return TRUE;
+}
+
+
+
+int main(int argc, char *argv[])
+{
+    t_rules rules;
 
     if (argc < 5 || argc > 6)
     {
@@ -11,5 +36,12 @@ int	main(int argc, char *argv[])
         return 1;
     }
 
-	return (0);
+    if (!init_main(argc, argv, &rules))
+    {
+        ft_putstr_fd("Error: invalid argument(s)\n", 2);
+        return 1;
+    }
+
+    return 0;
 }
+

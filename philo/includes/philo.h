@@ -18,8 +18,21 @@ typedef enum e_bool
 	TRUE = 1
 }				t_bool;
 
+
+typedef struct s_rules
+{
+    int n_philo;
+    int time_to_die;
+    int time_to_eat;
+    int time_to_sleep;
+    int eat_count;
+} t_rules;
+
 void	ft_putstr_fd(char *s, int fd);
 
 int	ft_atoi(const char *nptr);
+
+
+t_bool init_main(int argc, char *argv[], t_rules *rules);
 
 #endif //PHILO_H
