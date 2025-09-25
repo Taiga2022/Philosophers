@@ -24,10 +24,9 @@ t_bool init_main(int argc, char *argv[], t_rules *rules)
     return TRUE;
 }
 
-t_bool init_thread(t_rules rules)
-{
-    
-}
+// t_bool init_thread(t_rules rules)
+// {
+// }
 
 int main(int argc, char *argv[])
 {

@@ -35,4 +35,7 @@ int	ft_atoi(const char *nptr);
 
 t_bool init_main(int argc, char *argv[], t_rules *rules);
 
+
+void *routine(void *arg);
+
 #endif //PHILO_H

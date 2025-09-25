@@ -24,7 +24,9 @@ INC_DIR		= includes
 INCFLAG		= -I$(INC_DIR)
 CFLAGS		= -Wall -Wextra -Werror $(INCFLAG)
 
-SRC = philo.c
+SRC = philo.c\
+	  routine.c\
+	  utils.c
 
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC))
 OBJS		= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
