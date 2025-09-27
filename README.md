@@ -130,7 +130,8 @@
 - [x] 引数をatoiで処理,オプションの処理<-ifで分岐argc使う<-init関数の作成。
 - [ ] 引数を受け取って、人数分thread作成<-init_thread
     - [x] threadに通した関数でHelloworld出力
-    - [ ] errorハンドリング
+    - [x] errorハンドリング
+    - [ ] joinを別関数で
     - [ ] philo用に調整
 
 - [ ] ゲームフェーズ<-後で設計.
