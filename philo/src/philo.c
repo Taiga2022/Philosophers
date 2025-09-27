@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
 
     if (!init_thread(&rules))
     {
-        ft_putstr_fd("Error: invalid argument(s)\n", 2);
+        ft_putstr_fd("Error: not created thread\n", 2);
         return 1;
     }
 
