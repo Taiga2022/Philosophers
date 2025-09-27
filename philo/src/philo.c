@@ -24,19 +24,19 @@ t_bool init_main(int argc, char *argv[], t_rules *rules)
     return TRUE;
 }
 
-t_bool init_thread(t_rules rules)
+t_bool init_thread(t_rules *rules)
 {
     pthread_t t1, t2;
 
-    pthread_mutex_init(&(rules.mutex), NULL);
+    pthread_mutex_init(&(rules->mutex), NULL);
 
-    pthread_create(&t1, NULL, routine, &rules);
-    pthread_create(&t2, NULL, routine, &rules);
+    pthread_create(&t1, NULL, routine, rules);
+    pthread_create(&t2, NULL, routine, rules);
 
     pthread_join(t1, NULL);
     pthread_join(t2, NULL);
 
-    pthread_mutex_destroy(&(rules.mutex));
+    pthread_mutex_destroy(&(rules->mutex));
     return TRUE;
 }
 
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    if (!init_thread(rules))
+    if (!init_thread(&rules))
     {
         ft_putstr_fd("Error: invalid argument(s)\n", 2);
         return 1;
@@ -65,33 +65,3 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-
-
-// #include <stdio.h>
-// #include <pthread.h>
-//
-// pthread_mutex_t mutex;
-//
-// void* worker(void* arg) {
-//     pthread_mutex_lock(&mutex);   // ロック開始
-//     printf("Hello from thread %d\n", *(int*)arg);
-//     pthread_mutex_unlock(&mutex); // ロック解除
-//     return NULL;
-// }
-//
-// int main() {
-//     pthread_t t1, t2;
-//     int id1 = 1, id2 = 2;
-//
-//     pthread_mutex_init(&mutex, NULL);
-//
-//     pthread_create(&t1, NULL, worker, &id1);
-//     pthread_create(&t2, NULL, worker, &id2);
-//
-//     pthread_join(t1, NULL);
-//     pthread_join(t2, NULL);
-//
-//     pthread_mutex_destroy(&mutex);
-//
-//     return 0;
-// }
