@@ -24,19 +24,63 @@ t_bool init_main(int argc, char *argv[], t_rules *rules)
     return TRUE;
 }
 
+// t_bool init_thread(t_rules *rules)
+// {
+//     pthread_t t1, t2;
+//
+//     pthread_mutex_init(&(rules->mutex), NULL);
+//
+//     pthread_create(&t1, NULL, routine, rules);
+//     pthread_create(&t2, NULL, routine, rules);
+//
+//     pthread_join(t1, NULL);
+//     pthread_join(t2, NULL);
+//
+//     pthread_mutex_destroy(&(rules->mutex));
+//     return TRUE;
+// }
+
 t_bool init_thread(t_rules *rules)
 {
     pthread_t t1, t2;
+    int ret;
 
-    pthread_mutex_init(&(rules->mutex), NULL);
+    ret = pthread_mutex_init(&(rules->mutex), NULL);
+    if (ret != 0)
+    {
+        perror("pthread_mutex_init failed");
+        return FALSE;
+    }
 
-    pthread_create(&t1, NULL, routine, rules);
-    pthread_create(&t2, NULL, routine, rules);
+    ret = pthread_create(&t1, NULL, routine, rules);
+    if (ret != 0)
+    {
+        perror("pthread_create t1 failed");
+        pthread_mutex_destroy(&rules->mutex);
+        return FALSE;
+    }
 
-    pthread_join(t1, NULL);
-    pthread_join(t2, NULL);
+    ret = pthread_create(&t2, NULL, routine, rules);
+    if (ret != 0)
+    {
+        perror("pthread_create t2 failed");
+        pthread_join(t1, NULL);
+        pthread_mutex_destroy(&rules->mutex);
+        return FALSE;
+    }
 
-    pthread_mutex_destroy(&(rules->mutex));
+    ret = pthread_join(t1, NULL);
+    if (ret != 0)
+        perror("pthread_join t1 failed");
+
+    ret = pthread_join(t2, NULL);
+    if (ret != 0)
+        perror("pthread_join t2 failed");
+
+    ret = pthread_mutex_destroy(&(rules->mutex));
+    if (ret != 0)
+        perror("pthread_mutex_destroy failed");
+
     return TRUE;
 }
 
