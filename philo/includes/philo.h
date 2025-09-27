@@ -26,6 +26,7 @@ typedef struct s_rules
     int time_to_eat;
     int time_to_sleep;
     int eat_count;
+	pthread_mutex_t	mutex;
 } t_rules;
 
 void	ft_putstr_fd(char *s, int fd);

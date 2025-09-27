@@ -57,6 +57,7 @@ asan: re
 	./$(NAME) 5 800 200 200
 
 tsan: CFLAGS += -g -fsanitize=thread
+tsan: CC = clang
 tsan: re
 	@echo "🚀 Running with ThreadSanitizer"
 	./$(NAME) 5 800 200 200
