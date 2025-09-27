@@ -24,22 +24,6 @@ t_bool init_main(int argc, char *argv[], t_rules *rules)
     return TRUE;
 }
 
-// t_bool init_thread(t_rules *rules)
-// {
-//     pthread_t t1, t2;
-//
-//     pthread_mutex_init(&(rules->mutex), NULL);
-//
-//     pthread_create(&t1, NULL, routine, rules);
-//     pthread_create(&t2, NULL, routine, rules);
-//
-//     pthread_join(t1, NULL);
-//     pthread_join(t2, NULL);
-//
-//     pthread_mutex_destroy(&(rules->mutex));
-//     return TRUE;
-// }
-
 t_bool init_thread(t_rules *rules)
 {
     pthread_t t1, t2;
