@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 18:00:18 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/09/28 19:36:23 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/09/28 20:01:39 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_bool	cleanup_on_thread_error(t_rules *rules, int created_count)
 	while (j < created_count)
 	{
 		if (pthread_join(rules->philos[j].thread, NULL) != 0)
-			return (FALSE);
+			return (perror("pthread_join failed"),FALSE);
 		j++;
 	}
 	while (i < rules->n_philo)
