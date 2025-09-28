@@ -6,7 +6,7 @@
 #    By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/15 11:46:30 by tshimizu          #+#    #+#              #
-#    Updated: 2025/09/15 11:51:32 by tshimizu         ###   ########.fr        #
+#    Updated: 2025/09/28 11:50:14 by tshimizu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,8 @@ CFLAGS		= -Wall -Wextra -Werror $(INCFLAG)
 
 SRC = philo.c\
 	  routine.c\
-	  utils.c
+	  utils.c\
+	  thread.c
 
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC))
 OBJS		= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
