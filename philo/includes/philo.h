@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 11:52:42 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/09/28 19:47:52 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/10/04 12:12:33 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ typedef enum e_bool
 	FALSE = 0,
 	TRUE = 1
 }					t_bool;
+
+typedef struct s_rules  t_rules;
 
 typedef struct s_philo
 {
@@ -64,6 +66,10 @@ typedef struct s_rules
 void				ft_putstr_fd(char *s, int fd);
 
 int					ft_atoi(const char *nptr);
+
+void ft_precise_sleep(int time_in_ms);
+
+long long ft_get_timestamp(void);
 
 t_bool				init_main(int argc, char *argv[], t_rules *rules);
 

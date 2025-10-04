@@ -196,13 +196,14 @@ N 人の哲学者が円卓に座り、左右にフォークが1本ずつ。
 
 ## 設計
 - [x] 引数をatoiで処理,オプションの処理<-ifで分岐argc使う<-init関数の作成。
-- [ ] 引数を受け取って、人数分thread作成<-init_thread
+- [x] 引数を受け取って、人数分thread作成<-init_thread
     - [x] threadに通した関数でHelloworld出力
     - [x] errorハンドリング
     - [x] joinを別関数で
-    - [ ] philo用に調整
+    - [x] philo用に調整
 
-- [ ] ゲームフェーズ<-後で設計.
+- [ ] ゲームフェーズ
   - [ ] forkを取る = n-1 or n+1; n = id;
+
 
 ## 例外処理

@@ -6,7 +6,7 @@
 #    By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/15 11:46:30 by tshimizu          #+#    #+#              #
-#    Updated: 2025/09/28 11:50:14 by tshimizu         ###   ########.fr        #
+#    Updated: 2025/10/04 11:18:42 by tshimizu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ CFLAGS		= -Wall -Wextra -Werror $(INCFLAG)
 SRC = philo.c\
 	  routine.c\
 	  utils.c\
-	  thread.c
+	  thread.c\
+	  free.c
 
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC))
 OBJS		= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -69,6 +70,9 @@ debug: re
 
 valgrind: re
 	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) 5 800 200 200
+
+helgrind: re
+	valgrind --tool=helgrind --fair-sched=yes ./$(NAME) 5 800 200 200
 
 # ========================
 #    TEST / RUN HELPERS

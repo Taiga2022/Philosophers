@@ -42,9 +42,9 @@ t_bool	init_main(int argc, char *argv[], t_rules *rules)
 
 t_bool	init_game(t_rules *rules)
 {
-	if (!init_mutex_forks(rules) || !pthread_mutex_init(&(rules->print_mutex),
-			NULL) || !pthread_mutex_init(&(rules->death_mutex), NULL))
-		return (perror("pthread_mutex_init failed"), FALSE);
+	if (!init_mutex_forks(rules) || pthread_mutex_init(&(rules->print_mutex),
+			NULL) || pthread_mutex_init(&(rules->death_mutex), NULL))
+		return (perror("init_game:pthread_mutex_init failed"), FALSE);
 	if (!init_thread(rules))
 		return (FALSE);
 	if (!cleanup_all(rules))
