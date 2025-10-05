@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 11:52:42 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/10/04 12:12:33 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/10/05 17:01:20 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_rules
 	int				time_to_sleep;
 	int				eat_count;
 	long long		start_time;
+	pthread_t		monitor_thread;
 
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_mutex;
@@ -84,5 +85,7 @@ t_bool				cleanup_all(t_rules *rules);
 t_bool				cleanup_on_thread_error(t_rules *rules, int created_count);
 
 void				*routine(void *arg);
+
+void *monitor(void *arg);
 
 #endif // PHILO_H

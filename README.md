@@ -203,7 +203,16 @@ N 人の哲学者が円卓に座り、左右にフォークが1本ずつ。
     - [x] philo用に調整
 
 - [ ] ゲームフェーズ
-  - [ ] forkを取る = n-1 or n+1; n = id;
+  - [x] forkを取る = n-1 or n+1; n = id;
+  - [x] 引数処理・スレッド生成
+  - [x] Hello world 出力
+  - [x] `routine()` をゲームループ化
+  - [x] `take_forks()` / `put_down_forks()` 実装 <-後で関数切り分け
+  - [x] `print_action()` をmutex付きで実装
+  - [x] ft_get_timestamp() / ft_precise_sleep() 実装
+  - [ ] `monitor()` スレッド追加
+  - [ ] オプション `number_of_times_each_philosopher_must_eat` 実装
+
 
 
 ## 例外処理

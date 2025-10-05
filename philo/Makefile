@@ -6,7 +6,7 @@
 #    By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/15 11:46:30 by tshimizu          #+#    #+#              #
-#    Updated: 2025/10/04 11:18:42 by tshimizu         ###   ########.fr        #
+#    Updated: 2025/10/05 18:04:54 by tshimizu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ SRC = philo.c\
 	  routine.c\
 	  utils.c\
 	  thread.c\
-	  free.c
+	  free.c \
+	  monitor.c
 
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC))
 OBJS		= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -73,6 +74,9 @@ valgrind: re
 
 helgrind: re
 	valgrind --tool=helgrind --fair-sched=yes ./$(NAME) 5 800 200 200
+
+drd: re
+	valgrind --tool=drd  ./$(NAME) 5 800 200 200
 
 # ========================
 #    TEST / RUN HELPERS
