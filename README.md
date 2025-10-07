@@ -210,7 +210,7 @@ N 人の哲学者が円卓に座り、左右にフォークが1本ずつ。
   - [x] `take_forks()` / `put_down_forks()` 実装 <-後で関数切り分け
   - [x] `print_action()` をmutex付きで実装
   - [x] ft_get_timestamp() / ft_precise_sleep() 実装
-  - [ ] `monitor()` スレッド追加
+  - [x] `monitor()` スレッド追加
   - [ ] オプション `number_of_times_each_philosopher_must_eat` 実装
 
 
