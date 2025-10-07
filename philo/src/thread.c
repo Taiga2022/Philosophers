@@ -28,6 +28,8 @@ t_bool	init_thread(t_rules *rules)
 	int i;
 
 	i = 0;
+
+
 	while (i < rules->n_philo)
 	{
 		init_philo(rules, i);
@@ -35,7 +37,8 @@ t_bool	init_thread(t_rules *rules)
 			return (perror("pthread_create failed"), cleanup_on_thread_error(rules, i), FALSE);
 		i++;
 	}
-
+	if (pthread_create(&(rules->monitor_thread), NULL, monitor, rules) != 0)
+		return (perror("monitor thread create failed"), FALSE);
 	i = 0;
 	while (i < rules->n_philo)
 	{
@@ -43,9 +46,6 @@ t_bool	init_thread(t_rules *rules)
 			return (perror("pthread_join failed"), cleanup_on_thread_error(rules, i), FALSE);
 		i++;
 	}
-
-	if (pthread_create(&(rules->monitor_thread), NULL, monitor, rules) != 0)
-		return (perror("monitor thread create failed"), FALSE);
 
 	if (pthread_join(rules->monitor_thread, NULL) != 0)
 		return (perror("monitor thread join failed"), cleanup_on_thread_error(rules, i), FALSE);

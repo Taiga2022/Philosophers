@@ -31,7 +31,7 @@ void *monitor(void *arg)
 				pthread_mutex_unlock(&(rules->death_mutex));
 
 				pthread_mutex_lock(&(rules->print_mutex));
-				printf("%lld %d died\n",
+				printf("[%lld] %d died\n",
 					now - rules->start_time, rules->philos[i].id);
 				pthread_mutex_unlock(&(rules->print_mutex));
 				return NULL;

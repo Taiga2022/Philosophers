@@ -18,10 +18,13 @@ static void	print_action(t_philo *philo, char *action)
 
 	rules = philo->rules;
 	pthread_mutex_lock(&(rules->print_mutex));
-	printf("[%lld] Philosopher %d %s\n", ft_get_timestamp() - rules->start_time,
-		philo->id + 1, action);
+	if (!rules->someone_died)
+		printf("[%lld] %d %s\n",
+			ft_get_timestamp() - rules->start_time,
+			philo->id + 1, action);
 	pthread_mutex_unlock(&(rules->print_mutex));
 }
+
 
 static void	eat(t_philo *philo)
 {
@@ -47,7 +50,8 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	rules = philo->rules;
-	if (philo->id % 2 == 0)
+    philo->last_meal = ft_get_timestamp();
+	if (philo->id % 2 == 1)
 		usleep(1000);
 	while (TRUE)
 	{

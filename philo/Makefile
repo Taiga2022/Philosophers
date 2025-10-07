@@ -82,7 +82,7 @@ drd: re
 #    TEST / RUN HELPERS
 # ========================
 run: all
-	./$(NAME) 5 800 200 200
+	./$(NAME) 5 400 200 200
 
 test: all
 	./$(NAME) 2 300 100 100
