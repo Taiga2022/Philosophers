@@ -20,6 +20,7 @@ t_bool	init_main(int argc, char *argv[], t_rules *rules)
 	rules->time_to_sleep = ft_atoi(argv[4]);
 	rules->start_time = 0;
 	rules->someone_died = 0;
+	rules->ready_count = 0;
 	rules->forks = malloc(sizeof(pthread_mutex_t) * rules->n_philo);
 	if (!rules->forks)
 		return (FALSE);
@@ -43,7 +44,7 @@ t_bool	init_main(int argc, char *argv[], t_rules *rules)
 t_bool	init_game(t_rules *rules)
 {
 	if (!init_mutex_forks(rules) || pthread_mutex_init(&(rules->print_mutex),
-			NULL) || pthread_mutex_init(&(rules->death_mutex), NULL))
+			NULL) || pthread_mutex_init(&(rules->death_mutex), NULL)||pthread_mutex_init(&(rules->ready_mutex), NULL))
 		return (perror("init_game:pthread_mutex_init failed"), FALSE);
 	if (!init_thread(rules))
 		return (FALSE);

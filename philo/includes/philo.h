@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 11:52:42 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/10/05 17:01:20 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/10/19 11:54:47 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,9 @@ typedef struct s_rules
 	int				someone_died;
 
 	t_philo			*philos;
+
+    pthread_mutex_t ready_mutex;
+    int ready_count;
 }					t_rules;
 
 

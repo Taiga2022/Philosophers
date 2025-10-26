@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 11:51:19 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/10/05 17:10:23 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/10/19 10:30:12by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,10 @@ static void	print_action(t_philo *philo, char *action)
 	rules = philo->rules;
 	pthread_mutex_lock(&(rules->print_mutex));
 	if (!rules->someone_died)
-		printf("[%lld] %d %s\n",
-			ft_get_timestamp() - rules->start_time,
-			philo->id + 1, action);
+		printf("%lld %d %s\n", ft_get_timestamp() - rules->start_time, philo->id
+			+ 1, action);
 	pthread_mutex_unlock(&(rules->print_mutex));
 }
-
 
 static void	eat(t_philo *philo)
 {
@@ -39,6 +37,12 @@ static void	eat(t_philo *philo)
 	philo->last_meal = ft_get_timestamp();
 	ft_precise_sleep(rules->time_to_eat);
 	philo->meals_eaten++;
+	if (rules->eat_count != -1 && philo->meals_eaten >= rules->eat_count)
+	{
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
+		return;
+	}
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 }
@@ -50,7 +54,10 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	rules = philo->rules;
-    philo->last_meal = ft_get_timestamp();
+	philo->last_meal = ft_get_timestamp();
+	pthread_mutex_lock(&rules->ready_mutex);
+	rules->ready_count++;
+	pthread_mutex_unlock(&rules->ready_mutex);
 	if (philo->id % 2 == 1)
 		usleep(1000);
 	while (TRUE)
