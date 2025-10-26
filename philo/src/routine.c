@@ -18,25 +18,44 @@ static void	print_action(t_philo *philo, char *action)
 
 	rules = philo->rules;
 	pthread_mutex_lock(&(rules->print_mutex));
-	if (!rules->someone_died)
-		printf("%lld %d %s\n", ft_get_timestamp() - rules->start_time, philo->id
-			+ 1, action);
+
+	pthread_mutex_lock(&(rules->death_mutex));
+	int is_dead = rules->someone_died;
+	pthread_mutex_unlock(&(rules->death_mutex));
+
+	if (!is_dead)
+		printf("%lld %d %s\n", ft_get_timestamp() - rules->start_time,
+			philo->id + 1, action);
+
 	pthread_mutex_unlock(&(rules->print_mutex));
 }
+
 
 static void	eat(t_philo *philo)
 {
 	t_rules	*rules;
 
 	rules = philo->rules;
-	pthread_mutex_lock(philo->left_fork);
-	print_action(philo, "has taken a fork");
-	pthread_mutex_lock(philo->right_fork);
+	if (philo->id % 2 == 0)
+	{
+		pthread_mutex_lock(philo->left_fork);
+		print_action(philo, "has taken a fork");
+		pthread_mutex_lock(philo->right_fork);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->right_fork);
+		print_action(philo, "has taken a fork");
+		pthread_mutex_lock(philo->left_fork);
+	}
 	print_action(philo, "has taken a fork");
 	print_action(philo, "is eating");
+	pthread_mutex_lock(&(philo->meal_mutex));
 	philo->last_meal = ft_get_timestamp();
-	ft_precise_sleep(rules->time_to_eat);
 	philo->meals_eaten++;
+	pthread_mutex_unlock(&(philo->meal_mutex));
+
+	ft_precise_sleep(rules->time_to_eat);
 	if (rules->eat_count != -1 && philo->meals_eaten >= rules->eat_count)
 	{
 		pthread_mutex_unlock(philo->right_fork);
@@ -54,7 +73,9 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	rules = philo->rules;
-	philo->last_meal = ft_get_timestamp();
+    pthread_mutex_lock(&(philo->meal_mutex));
+    philo->last_meal = ft_get_timestamp();
+    pthread_mutex_unlock(&(philo->meal_mutex));
 	pthread_mutex_lock(&rules->ready_mutex);
 	rules->ready_count++;
 	pthread_mutex_unlock(&rules->ready_mutex);

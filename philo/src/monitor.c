@@ -31,6 +31,7 @@ void	*monitor(void *arg)
 		while (i < rules->n_philo)
 		{
 			now = ft_get_timestamp();
+			pthread_mutex_lock(&(rules->philos[i].meal_mutex));
 			if (!rules->someone_died && now
 				- rules->philos[i].last_meal > rules->time_to_die)
 			{
@@ -46,6 +47,7 @@ void	*monitor(void *arg)
 			if (rules->eat_count != -1
 				&& rules->philos[i].meals_eaten >= rules->eat_count)
 				done_eating++;
+			pthread_mutex_unlock(&(rules->philos[i].meal_mutex));
 			i++;
 		}
 		if (rules->eat_count != -1 && done_eating == rules->n_philo)

@@ -6,7 +6,7 @@
 #    By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/15 11:46:30 by tshimizu          #+#    #+#              #
-#    Updated: 2025/10/05 18:04:54 by tshimizu         ###   ########.fr        #
+#    Updated: 2025/10/26 11:24:25 by tshimizu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,10 +73,10 @@ valgrind: re
 	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) 5 800 200 200
 
 helgrind: re
-	valgrind --tool=helgrind --fair-sched=yes ./$(NAME) 5 800 200 200
+	valgrind --tool=helgrind --fair-sched=yes ./$(NAME) 5 800 400 400
 
 drd: re
-	valgrind --tool=drd  ./$(NAME) 5 800 200 200
+	valgrind --tool=drd  ./$(NAME) 5 800 400 400
 
 # ========================
 #    TEST / RUN HELPERS

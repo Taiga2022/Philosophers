@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 11:49:47 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/10/19 12:08:37 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/10/26 10:50:12 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_bool	init_philo(t_rules *rules, int i)
 	rules->philos[i].last_meal = 0;
 	rules->philos[i].left_fork = &(rules->forks[i]);
 	rules->philos[i].right_fork = &(rules->forks[(i + 1) % rules->n_philo]);
+	pthread_mutex_init(&(rules->philos[i].meal_mutex), NULL);
 	rules->philos[i].rules = rules;
 	return TRUE;
 }
