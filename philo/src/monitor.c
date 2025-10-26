@@ -42,6 +42,7 @@ void	*monitor(void *arg)
 				pthread_mutex_lock(&(rules->death_mutex));
 				rules->someone_died = TRUE;
 				pthread_mutex_unlock(&(rules->death_mutex));
+				pthread_mutex_unlock(&(rules->philos[i].meal_mutex));
 				return (NULL);
 			}
 			if (rules->eat_count != -1
