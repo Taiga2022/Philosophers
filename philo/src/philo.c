@@ -55,7 +55,7 @@ t_bool	init_game(t_rules *rules)
 
 int	main(int argc, char *argv[])
 {
-	t_rules	rules;
+	t_rules	*rules;
 
 	if (argc < 5 || argc > 6)
 	{
@@ -63,15 +63,21 @@ int	main(int argc, char *argv[])
 			2);
 		return (1);
 	}
-	if (!init_main(argc, argv, &rules))
+	rules = malloc(sizeof(t_rules));
+	if (!rules)
+		return (1);
+	if (!init_main(argc, argv, rules))
 	{
 		ft_putstr_fd("Error: invalid argument(s)\n", 2);
+		free(rules);
 		return (1);
 	}
-	if (!init_game(&rules))
+	if (!init_game(rules))
 	{
 		ft_putstr_fd("Error: not created thread\n", 2);
+		free(rules);
 		return (1);
 	}
+	free(rules);
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/15 11:46:30 by tshimizu          #+#    #+#              #
-#    Updated: 2025/10/26 11:24:25 by tshimizu         ###   ########.fr        #
+#    Updated: 2025/11/01 14:53:50 by tshimizu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,10 +70,10 @@ debug: re
 	@echo "🚀 Debug build ready (use gdb/lldb)"
 
 valgrind: re
-	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) 5 800 200 200
+	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) 5 800 400 400
 
 helgrind: re
-	valgrind --tool=helgrind --fair-sched=yes ./$(NAME) 5 800 400 400
+	valgrind --tool=helgrind --fair-sched=yes ./$(NAME) 5 800 200 200 5
 
 drd: re
 	valgrind --tool=drd  ./$(NAME) 5 800 400 400
