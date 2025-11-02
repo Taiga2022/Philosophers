@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/28 18:00:18 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/10/05 16:59:21y tshimizu         ###   ########.fr       */
+/*   Created: 2025/11/02 18:22:22 by tshimizu          #+#    #+#             */
+/*   Updated: 2025/11/02 18:23:36 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@ t_bool	cleanup_all(t_rules *rules)
 	i = 0;
 	while (i < rules->n_philo)
 	{
-		if (pthread_mutex_destroy(&(rules->forks[i])) != 0|| pthread_mutex_destroy(&(rules->philos[i].meal_mutex)) != 0)
+		if (pthread_mutex_destroy(&(rules->forks[i])) != 0
+			|| pthread_mutex_destroy(&(rules->philos[i].meal_mutex)) != 0)
 			return (perror("cleanup_all: fork mutex destroy failed"), FALSE);
 		i++;
 	}
 	if (pthread_mutex_destroy(&(rules->print_mutex)) != 0
-		|| pthread_mutex_destroy(&(rules->death_mutex)) != 0|| pthread_mutex_destroy(&(rules->ready_mutex)) != 0)
+		|| pthread_mutex_destroy(&(rules->death_mutex)) != 0
+		|| pthread_mutex_destroy(&(rules->ready_mutex)) != 0)
 		return (perror("cleanup_all: global mutex destroy failed"), FALSE);
 	free(rules->forks);
 	free(rules->philos);
@@ -45,7 +47,7 @@ t_bool	cleanup_on_thread_error(t_rules *rules, int created_count)
 	while (i < rules->n_philo)
 	{
 		if (pthread_mutex_destroy(&(rules->forks[i])) != 0)
-			return (perror("cleanup_one_thread_error: fork mutex destroy failed"),
+			return (perror("cleanup_on_thread_error: fork destroy failed"),
 				FALSE);
 		i++;
 	}

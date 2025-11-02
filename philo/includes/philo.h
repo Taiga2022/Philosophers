@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 11:52:42 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/10/26 10:42:56 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/11/02 18:02:21 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,68 +28,74 @@ typedef enum e_bool
 {
 	FALSE = 0,
 	TRUE = 1
-}					t_bool;
+}						t_bool;
 
-typedef struct s_rules  t_rules;
+typedef struct s_rules	t_rules;
 
 typedef struct s_philo
 {
-	int				id;
-	int				meals_eaten;
-	long long		last_meal;
-	pthread_t		thread;
+	int					id;
+	int					meals_eaten;
+	long long			last_meal;
+	pthread_t			thread;
 
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
-    pthread_mutex_t meal_mutex;
+	pthread_mutex_t		*left_fork;
+	pthread_mutex_t		*right_fork;
+	pthread_mutex_t		meal_mutex;
 
-	t_rules			*rules;
-}					t_philo;
+	t_rules				*rules;
+}						t_philo;
 
 typedef struct s_rules
 {
-	int				n_philo;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				eat_count;
-	long long		start_time;
-	pthread_t		monitor_thread;
+	int					n_philo;
+	int					time_to_die;
+	int					time_to_eat;
+	int					time_to_sleep;
+	int					eat_count;
+	long long			start_time;
+	pthread_t			monitor_thread;
 
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	print_mutex;
-	pthread_mutex_t	death_mutex;
-	int				someone_died;
+	pthread_mutex_t		*forks;
+	pthread_mutex_t		print_mutex;
+	pthread_mutex_t		death_mutex;
+	int					someone_died;
 
-	t_philo			*philos;
+	t_philo				*philos;
 
-    pthread_mutex_t ready_mutex;
-    int ready_count;
-}					t_rules;
+	pthread_mutex_t		ready_mutex;
+	int					ready_count;
+}						t_rules;
 
+void					ft_putstr_fd(char *s, int fd);
 
-void				ft_putstr_fd(char *s, int fd);
+int						ft_atoi(const char *nptr);
 
-int					ft_atoi(const char *nptr);
+void					ft_precise_sleep(int time_in_ms);
 
-void ft_precise_sleep(int time_in_ms);
+long long				ft_get_timestamp(void);
 
-long long ft_get_timestamp(void);
+t_bool					init_main(int argc, char *argv[], t_rules *rules);
 
-t_bool				init_main(int argc, char *argv[], t_rules *rules);
+t_bool					init_philo(t_rules *rules, int i);
 
-t_bool				init_thread(t_rules *rules);
+t_bool					init_thread(t_rules *rules);
 
-t_bool				init_game(t_rules *rules);
+t_bool					init_game(t_rules *rules);
 
-t_bool init_mutex_forks(t_rules *rules);
+t_bool					init_mutex_forks(t_rules *rules);
 
-t_bool				cleanup_all(t_rules *rules);
+t_bool					cleanup_all(t_rules *rules);
 
-t_bool				cleanup_on_thread_error(t_rules *rules, int created_count);
+t_bool					cleanup_on_thread_error(t_rules *rules,
+							int created_count);
 
-void				*routine(void *arg);
+void					eat(t_philo *philo);
 
-void *monitor(void *arg);
+void					print_action(t_philo *philo, char *action);
+
+void					*routine(void *arg);
+
+void					*monitor(void *arg);
 
 #endif // PHILO_H

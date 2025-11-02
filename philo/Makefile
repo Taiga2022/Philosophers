@@ -6,7 +6,7 @@
 #    By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/15 11:46:30 by tshimizu          #+#    #+#              #
-#    Updated: 2025/11/01 14:53:50 by tshimizu         ###   ########.fr        #
+#    Updated: 2025/11/02 18:41:19 by tshimizu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,9 @@ SRC = philo.c\
 	  utils.c\
 	  thread.c\
 	  free.c \
-	  monitor.c
+	  monitor.c\
+	  eat.c\
+	  init_thread.c
 
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC))
 OBJS		= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -73,7 +75,7 @@ valgrind: re
 	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) 5 800 400 400
 
 helgrind: re
-	valgrind --tool=helgrind --fair-sched=yes ./$(NAME) 5 800 200 200 5
+	valgrind --tool=helgrind --fair-sched=yes ./$(NAME) 5 800 500 200 8
 
 drd: re
 	valgrind --tool=drd  ./$(NAME) 5 800 400 400

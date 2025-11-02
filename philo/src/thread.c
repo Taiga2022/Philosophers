@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 11:49:47 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/10/26 10:50:12 by tshimizu         ###   ########.fr       */
+/*   Updated: 2025/11/02 18:01:42 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,49 +21,19 @@ t_bool	init_philo(t_rules *rules, int i)
 	rules->philos[i].right_fork = &(rules->forks[(i + 1) % rules->n_philo]);
 	pthread_mutex_init(&(rules->philos[i].meal_mutex), NULL);
 	rules->philos[i].rules = rules;
-	return TRUE;
+	return (TRUE);
 }
 
-t_bool	init_thread(t_rules *rules)
+t_bool	init_mutex_forks(t_rules *rules)
 {
-	int i;
+	int	i;
 
-	i = 0;
-
-
-	while (i < rules->n_philo)
-	{
-		init_philo(rules, i);
-		if (pthread_create(&(rules->philos[i].thread), NULL, routine, &(rules->philos[i])) != 0)
-			return (perror("pthread_create failed"), cleanup_on_thread_error(rules, i), FALSE);
-		i++;
-	}
-	if (pthread_create(&(rules->monitor_thread), NULL, monitor, rules) != 0)
-		return (perror("monitor thread create failed"), FALSE);
 	i = 0;
 	while (i < rules->n_philo)
 	{
-		if (pthread_join(rules->philos[i].thread, NULL) != 0)
-			return (perror("pthread_join failed"), cleanup_on_thread_error(rules, i), FALSE);
+		if (pthread_mutex_init(&(rules->forks[i]), NULL) != 0)
+			return (FALSE);
 		i++;
 	}
-
-	if (pthread_join(rules->monitor_thread, NULL) != 0)
-		return (perror("monitor thread join failed"), cleanup_on_thread_error(rules, i), FALSE);
-	return TRUE;
-}
-
-
-t_bool init_mutex_forks(t_rules *rules)
-{
-	int i;
-	i=0;
-
-	while (i<rules->n_philo)
-	{
-		if (pthread_mutex_init(&(rules->forks[i]), NULL)!=0)
-			return FALSE;
-		i++;
-	}
-	return TRUE;
+	return (TRUE);
 }

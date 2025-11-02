@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/28 11:51:31 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/09/28 12:21:59by tshimizu         ###   ########.fr       */
+/*   Created: 2025/11/02 20:18:21 by tshimizu          #+#    #+#             */
+/*   Updated: 2025/11/02 20:18:25 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ t_bool	init_main(int argc, char *argv[], t_rules *rules)
 t_bool	init_game(t_rules *rules)
 {
 	if (!init_mutex_forks(rules) || pthread_mutex_init(&(rules->print_mutex),
-			NULL) || pthread_mutex_init(&(rules->death_mutex), NULL)||pthread_mutex_init(&(rules->ready_mutex), NULL))
+			NULL) || pthread_mutex_init(&(rules->death_mutex), NULL)
+		|| pthread_mutex_init(&(rules->ready_mutex), NULL))
 		return (perror("init_game:pthread_mutex_init failed"), FALSE);
 	if (!init_thread(rules))
 		return (FALSE);
@@ -59,7 +60,7 @@ int	main(int argc, char *argv[])
 
 	if (argc < 5 || argc > 6)
 	{
-		ft_putstr_fd("Usage: ./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n",
+		ft_putstr_fd("Usage: ./philo 5 800 200 200 [8]\n",
 			2);
 		return (1);
 	}
