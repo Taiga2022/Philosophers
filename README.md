@@ -1,218 +1,115 @@
+*This project has been created as part of the 42 curriculum by tshimizu.*
+
 # Philosophers
 
-## 引数
+## Description
 
-1. number_of_philosophers
-- 哲学者の人数（同時にスレッドを何個作るか）
+This project implements a solution to the classic **Dining Philosophers Problem**, a fundamental concurrency challenge in computer science.
 
-- 2以上でなければ意味がない（1だと片方のフォークがなくて死ぬ）
+The simulation involves N philosophers sitting at a round table, each alternating between thinking, eating, and sleeping. To eat, a philosopher must acquire two forks (one on their left and one on their right), but forks are shared resources that can only be held by one philosopher at a time. The challenge is to prevent deadlock (all philosophers waiting indefinitely) and starvation (a philosopher never getting to eat) while detecting when a philosopher "dies" from not eating within a specified time limit.
 
-2. time_to_die<-game
-- 寿命（ミリ秒単位）
+This implementation uses **POSIX threads** (`pthread`) and **mutex locks** to manage concurrency, with a dedicated monitor thread to detect termination conditions.
 
-- 最後に食事をしてからこの時間が経過すると、その哲学者は「死亡」
+## Instructions
 
-- → gettimeofday などで「最後に食べた時間」を記録して監視スレッドがチェックする
+### Compilation
 
-3. time_to_eat<-game
-- 食事時間（ms）
+Build the project using the provided Makefile:
 
-- 2本のフォークを取って「食事している」状態になる時間
+```bash
+make
+```
 
-- この間は「他の哲学者がそのフォークを使えない」
+This generates the `philo` executable in the project root.
 
-- 食べ終わったら「最後に食べた時刻」を更新
+### Execution
 
-4. time_to_sleep<-game
-- 睡眠時間（ms）
+Run the program with the following syntax:
 
-- 食べ終わった後、寝ている時間
+```bash
+./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]
+```
 
-- 寝ている間はフォークを離しているので他の哲学者が使える
+**Arguments:** [1-cite-1](#1-cite-1)
 
-5. [number_of_times_each_philosopher_must_eat]（オプション）
-- 必須で食べる回数
+1. `number_of_philosophers`: Number of philosophers (and forks) at the table (minimum 2)
+2. `time_to_die`: Time in milliseconds before a philosopher dies if they haven't eaten
+3. `time_to_eat`: Time in milliseconds a philosopher spends eating
+4. `time_to_sleep`: Time in milliseconds a philosopher spends sleeping
+5. `[number_of_times_each_philosopher_must_eat]` (optional): Program terminates when all philosophers have eaten this many times
 
-- 全員がこの回数に到達したらプログラム終了
+**Example:**
 
-- 指定されない場合は「誰かが死ぬまで無限に続ける」
+```bash
+# 5 philosophers, 800ms to die, 200ms to eat, 200ms to sleep
+./philo 5 800 200 200
 
+# Same, but stop after each philosopher eats 8 times
+./philo 5 800 200 200 8
+```
 
-## ルール
+### Output Format
 
-「Philosophers（哲学者）」課題の ルール を整理して解説します。
-課題で守るべき制約や動作の基本ルールを理解することが大事です。
+The program outputs timestamped actions for each philosopher
 
-1. 参加者
-- 哲学者は N 人
-
-    - 各哲学者は 1スレッド で表現
-
-    - ID は 1 から N
-
-- フォークは N 本
-
-    - 円卓の各哲学者の左右に1本ずつ配置
-
-    - 同時に1人しか持てない（mutex で保護）
-
-2. 行動ループ
-各哲学者は次の動作を繰り返します：
-
-1. 考える (thinking)
-
-- フォークを取っていない状態
-
-- 思考中は他の哲学者に影響なし
-
-2. フォークを取る
-
-    - 左フォーク → 右フォーク（または逆）
-
-    - フォークは mutex で保護
-
-    - デッドロック回避のため、哲学者によって順番を変えることもある
-
-3. 食べる (eating)
-
-    - 2本のフォークを持っているときだけ可能
-
-    - 食事時間は time_to_eat（ミリ秒）
-
-    - 食べ終わったら 最後に食べた時刻を更新
-
-4. フォークを置く
-
-- 食事後は両方のフォークを解放（mutex unlock）
-
-5. 眠る (sleeping)
-
-- time_to_sleep の間、フォークは解放されたまま
-
-- 睡眠中は他の哲学者がフォークを使える
-
-3. 終了条件
-- 誰かが time_to_die を超えて食べなかった → 死亡、プログラム終了
-
-- （オプション）全員が指定回数食べ終わった → プログラム終了
-
-4. 出力ルール
-- 行動は タイムスタンプ + 哲学者ID + 状態 で出力
-
-- 例：
-``````c
+```
 123 1 has taken a fork
 123 1 is eating
-223 1 is sleeping
-``````
+323 1 is sleeping
+323 1 is thinking
+```
 
-- ログ出力も mutex で保護して競合を避ける
+Format: `[timestamp_ms] [philosopher_id] [action]`
 
-5. デッドロック回避
-- 注意：全員が同時に左フォークを取ると永遠に待つ → デッドロック
+## Resources
 
-- 対策例：
+### Classic References
 
-    - 偶数IDは左→右、奇数IDは右→左
+- [Philosophersを理解するためのスライド](https://docs.google.com/presentation/d/12-lAykLu-RVACE1gI2aP-uEYZoOaeeFVYGh8W4ttTNw/edit?slide=id.gd4524b1be8_0_253&pli=1#slide=id.gd4524b1be8_0_253)
 
-    - 最大同時フォーク取得人数を N-1 に制限
+### AI Usage
 
-6. 時間管理
+AI tools were used for the following tasks in this project:
 
-- time_to_die の監視には 監視スレッド か ループでのチェック
+- **Code structure planning**: Generating initial outlines for thread synchronization architecture
+- **Debugging assistance**: Analyzing race condition scenarios and suggesting mutex placement strategies
 
-- gettimeofday() でミリ秒単位の経過時間を取得
+AI was **not** used for:
+- Core algorithm implementation (deadlock prevention, monitoring logic)
+- Thread lifecycle management code
+- Mutex synchronization primitives
 
-- usleep() で細かくスリープ
+## Technical Choices
 
-## デッドロック対策
-「philo」（philosophers, 食事する哲学者問題）で
-**右フォーク → 左フォークの順**で取り、**奇数の哲学者は少し待つ**という手法は、
-**デッドロックを防ぐための戦略**です。
+### Deadlock Prevention Strategy
 
----
+This implementation prevents deadlock using an **asymmetric fork acquisition** approach
 
-## 1️⃣ 問題の背景
+- **Even-numbered philosophers**: Acquire right fork first, then left fork
+- **Odd-numbered philosophers**: Wait briefly (`usleep(1000)`), then acquire right fork first, then left fork
 
-N 人の哲学者が円卓に座り、左右にフォークが1本ずつ。
-「食べる」には左右2本のフォークが必要です。
+This strategy breaks the circular wait condition by ensuring not all philosophers can simultaneously hold one fork while waiting for another. The initial delay for odd-numbered philosophers reduces contention during startup, preventing the scenario where all philosophers grab their right fork at once.
 
-もし全員が**同じタイミングで一斉に「左→右」**の順で取ろうとすると：
+### Thread Architecture
 
-1. 全員が左フォークを取る
-2. 右フォークは誰も取れない（全員の右フォークはすでに誰かの左フォーク）
-3. 全員が右フォーク待ち → 永遠に進まない
+- **N philosopher threads**: Each executes the think-eat-sleep cycle independently
+- **1 monitor thread**: Continuously checks for death conditions and completion status
+- **Mutex protection**: Individual mutexes for each fork, plus global mutexes for printing, death flag, and per-philosopher meal state
 
-➡ **デッドロック**が発生します。
+### Time Management
 
----
+- `gettimeofday()` for millisecond-precision timestamps
+- `usleep()` for precise sleep intervals
+- Monitor thread checks `last_meal` timestamps against `time_to_die` threshold
 
-## 2️⃣ 右→左の順で取るだけでは不十分
+## Implementation Status
 
-「右から取る」と決めても、全員が同時に**右→左**で取りに行ったら
-やはり同じことが起きます。
-→ 右フォークをみんな取って、左フォーク待ちのまま停止する。
+Core features:
 
----
-
-## 3️⃣ 奇数だけ待たせる理由
-
-そこで次の工夫を加えます：
-
-* **偶数の哲学者**: すぐに「右→左」でフォークを取る
-* **奇数の哲学者**: 少し `usleep` などで待ってから「右→左」
-
-こうすると……
-
-* 初期状態で **偶数だけ** がまず右フォークを取る
-* 奇数は待機しているため、偶数の誰かが左フォークを取って食事を終え、
-  フォークを戻すチャンスが生まれる
-* 奇数はその後で取りにいくので、**全員が同時に2本目を待つ状態**がなくなる
-
-➡ **デッドロックが発生しない**。
-
----
-
-## 4️⃣ まとめると
-
-| 工夫           | 狙い                                    |
-| ------------ | ------------------------------------- |
-| **右→左の順で取る** | どの哲学者も「取る順番」を揃えて、リソースの循環待ちを単方向にする     |
-| **奇数は少し待つ**  | 一斉に「右→左」へ走るのを防ぎ、最初の競合を緩和してデッドロックを完全回避 |
-
----
-
-### 補足: 他の方法
-
-* **片側だけ順番を逆にする**
-  例: 1人だけ「左→右」、残りは「右→左」。
-* **セマフォ（最大 N-1）で同時に食べられる人数を制限**。
-
-いずれも目的は同じで、
-
-> **「全員が同時に2本目を待つ」パターンを作らない**
-> ことがデッドロック防止の本質です。
-
-
-## 設計
-- [x] 引数をatoiで処理,オプションの処理<-ifで分岐argc使う<-init関数の作成。
-- [x] 引数を受け取って、人数分thread作成<-init_thread
-    - [x] threadに通した関数でHelloworld出力
-    - [x] errorハンドリング
-    - [x] joinを別関数で
-    - [x] philo用に調整
-
-- [ ] ゲームフェーズ
-  - [x] forkを取る = n-1 or n+1; n = id;
-  - [x] 引数処理・スレッド生成
-  - [x] Hello world 出力
-  - [x] `routine()` をゲームループ化
-  - [x] `take_forks()` / `put_down_forks()` 実装 <-後で関数切り分け
-  - [x] `print_action()` をmutex付きで実装
-  - [x] ft_get_timestamp() / ft_precise_sleep() 実装
-  - [x] `monitor()` スレッド追加
-  - [ ] オプション `number_of_times_each_philosopher_must_eat` 実装
-
-
-
-## 例外処理
+- ✅ Argument parsing and validation
+- ✅ Thread creation and lifecycle management
+- ✅ Fork acquisition/release with mutex protection
+- ✅ Philosopher routine (think-eat-sleep loop)
+- ✅ Timestamped action logging
+- ✅ Monitor thread for death detection
+- ✅️ Optional meal count termination (partial implementation)

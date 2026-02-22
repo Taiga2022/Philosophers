@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 11:52:42 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/02 18:02:21 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/22 15:15:38 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include <errno.h>     /* errno */
+# include <errno.h> /* errno */
+# include <limits.h>
 # include <pthread.h>   /* pthread_create/join/detach and mutex APIs */
 # include <stddef.h>    /* size_t */
 # include <stdint.h>    /* integer types if needed */
@@ -66,6 +67,8 @@ typedef struct s_rules
 	pthread_mutex_t		ready_mutex;
 	int					ready_count;
 }						t_rules;
+
+t_bool					validate_args(int argc, char **argv);
 
 void					ft_putstr_fd(char *s, int fd);
 

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+         #
+#    By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/15 11:46:30 by tshimizu          #+#    #+#              #
-#    Updated: 2025/11/02 18:41:19 by tshimizu         ###   ########.fr        #
+#    Updated: 2026/02/22 13:47:39 by tshimizu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ SRC = philo.c\
 	  free.c \
 	  monitor.c\
 	  eat.c\
-	  init_thread.c
+	  init_thread.c\
+	  validation.c
 
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC))
 OBJS		= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

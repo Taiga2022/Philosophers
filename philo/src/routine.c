@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:24:15 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/02 18:24:18 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/22 14:04:07 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	init_philo_state(t_philo *philo)
 	philo->rules->ready_count++;
 	pthread_mutex_unlock(&(philo->rules->ready_mutex));
 	if (philo->id % 2 == 1)
-		usleep(1000);
+		usleep(1000 + (philo->id * 100));
 }
 
 static int	check_death(t_rules *rules)
@@ -58,7 +58,7 @@ static void	philo_cycle(t_philo *philo)
 	print_action(philo, "is sleeping");
 	ft_precise_sleep(rules->time_to_sleep);
 	print_action(philo, "is thinking");
-	usleep(500);
+	usleep(500 * (rules->n_philo / 10 + 1));
 }
 
 void	*routine(void *arg)
@@ -67,6 +67,8 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	init_philo_state(philo);
+	if (philo->rules->n_philo == 1)
+		return (print_action(philo, "has taken a fork"), NULL);
 	while (TRUE)
 	{
 		if (check_death(philo->rules))

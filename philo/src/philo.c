@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 20:18:21 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/02 20:18:25 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/22 15:17:16 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,10 @@ int	main(int argc, char *argv[])
 {
 	t_rules	*rules;
 
-	if (argc < 5 || argc > 6)
-	{
-		ft_putstr_fd("Usage: ./philo 5 800 200 200 [8]\n",
-			2);
+	if (!validate_args(argc, argv))
 		return (1);
-	}
+	if (argc < 5 || argc > 6)
+		return (ft_putstr_fd("Usage: ./philo 5 800 200 200 [8]\n", 2), 1);
 	rules = malloc(sizeof(t_rules));
 	if (!rules)
 		return (1);
