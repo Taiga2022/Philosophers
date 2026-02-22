@@ -30,7 +30,7 @@ Run the program with the following syntax:
 ./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]
 ```
 
-**Arguments:** [1-cite-1](#1-cite-1)
+**Arguments:**
 
 1. `number_of_philosophers`: Number of philosophers (and forks) at the table (minimum 2)
 2. `time_to_die`: Time in milliseconds before a philosopher dies if they haven't eaten
