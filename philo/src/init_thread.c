@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:00:55 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/23 22:50:09 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/23 23:17:34 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static t_bool	create_philo_threads(t_rules *rules)
 static t_bool	create_monitor_thread(t_rules *rules)
 {
 	if (pthread_create(&(rules->monitor_thread), NULL, monitor, rules) != 0)
-		return (ft_putstr_fd("monitor thread create failed", 2), FALSE);
+		return (FALSE);
 	return (TRUE);
 }
 
