@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   eat.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:24:29 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/02 18:24:56 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/23 23:30:02 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,5 @@ void	eat(t_philo *philo)
 	print_action(philo, "is eating");
 	update_meal(philo);
 	ft_precise_sleep(rules->time_to_eat);
-	if (rules->eat_count != -1 && philo->meals_eaten >= rules->eat_count)
-		return (put_forks(philo));
 	put_forks(philo);
 }
