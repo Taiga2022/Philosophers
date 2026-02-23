@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:22:22 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/23 23:03:29 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/23 23:10:06 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,9 @@ void	cleanup_on_join_error(t_rules *rules, int failed_idx)
 {
 	int	i;
 
+	pthread_mutex_lock(&(rules->death_mutex));
+	rules->someone_died = TRUE;
+	pthread_mutex_unlock(&(rules->death_mutex));
 	i = failed_idx + 1;
 	while (i < rules->n_philo)
 	{
