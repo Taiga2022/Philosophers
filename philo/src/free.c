@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:22:22 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/23 22:49:04 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/23 23:03:29 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ void	cleanup_on_thread_error(t_rules *rules, int created_count)
 {
 	int	i;
 
+	pthread_mutex_lock(&(rules->death_mutex));
+	rules->someone_died = TRUE;
+	pthread_mutex_unlock(&(rules->death_mutex));
 	i = 0;
 	while (i < created_count)
 	{
@@ -98,13 +101,15 @@ void	cleanup_partial_philos(t_rules *rules, int count)
 void	cleanup_on_join_error(t_rules *rules, int failed_idx)
 {
 	int	i;
+
 	i = failed_idx + 1;
 	while (i < rules->n_philo)
 	{
 		pthread_join(rules->philos[i].thread, NULL);
 		i++;
 	}
-	pthread_join(rules->monitor_thread, NULL);
+	if (failed_idx < rules->n_philo)
+		pthread_join(rules->monitor_thread, NULL);
 	i = 0;
 	while (i < rules->n_philo)
 	{
