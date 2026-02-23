@@ -32,7 +32,7 @@ Run the program with the following syntax:
 
 **Arguments:**
 
-1. `number_of_philosophers`: Number of philosophers (and forks) at the table (minimum 2)
+1. `number_of_philosophers`: Number of philosophers (and forks) at the table
 2. `time_to_die`: Time in milliseconds before a philosopher dies if they haven't eaten
 3. `time_to_eat`: Time in milliseconds a philosopher spends eating
 4. `time_to_sleep`: Time in milliseconds a philosopher spends sleeping

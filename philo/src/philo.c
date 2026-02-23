@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 20:18:21 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/22 15:17:16 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/23 22:32:13 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,24 @@ t_bool	init_main(int argc, char *argv[], t_rules *rules)
 
 t_bool	init_game(t_rules *rules)
 {
-	if (!init_mutex_forks(rules) || pthread_mutex_init(&(rules->print_mutex),
-			NULL) || pthread_mutex_init(&(rules->death_mutex), NULL)
-		|| pthread_mutex_init(&(rules->ready_mutex), NULL))
-		return (perror("init_game:pthread_mutex_init failed"), FALSE);
+	if (!init_mutex_forks(rules))
+		return (ft_putstr_fd("Error: fork mutex initialization failed\n", 2),
+			cleanup_init_game_error(rules, 0), FALSE);
+	if (pthread_mutex_init(&(rules->print_mutex), NULL) != 0)
+		return (ft_putstr_fd("Error: print_mutex initialization failed\n", 2),
+			cleanup_init_game_error(rules, 1), FALSE);
+	if (pthread_mutex_init(&(rules->death_mutex), NULL) != 0)
+	{
+		ft_putstr_fd("Error: death_mutex initialization failed\n", 2);
+		cleanup_init_game_error(rules, 2);
+		return (FALSE);
+	}
+	if (pthread_mutex_init(&(rules->ready_mutex), NULL) != 0)
+	{
+		ft_putstr_fd("Error: ready_mutex initialization failed\n", 2);
+		cleanup_init_game_error(rules, 3);
+		return (FALSE);
+	}
 	if (!init_thread(rules))
 		return (FALSE);
 	if (!cleanup_all(rules))
@@ -60,8 +74,6 @@ int	main(int argc, char *argv[])
 
 	if (!validate_args(argc, argv))
 		return (1);
-	if (argc < 5 || argc > 6)
-		return (ft_putstr_fd("Usage: ./philo 5 800 200 200 [8]\n", 2), 1);
 	rules = malloc(sizeof(t_rules));
 	if (!rules)
 		return (1);
