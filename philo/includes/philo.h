@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 11:52:42 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/23 22:30:38 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/23 22:49:27 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ typedef struct s_rules
 void					cleanup_partial_philos(t_rules *rules, int count);
 
 void					cleanup_init_game_error(t_rules *rules, int stage);
+
+void					cleanup_on_join_error(t_rules *rules, int failed_idx);
 
 t_bool					validate_args(int argc, char **argv);
 

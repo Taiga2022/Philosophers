@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 20:18:21 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/23 22:32:13 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/23 22:46:23 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ t_bool	init_main(int argc, char *argv[], t_rules *rules)
 	{
 		rules->eat_count = ft_atoi(argv[5]);
 		if (rules->eat_count <= 0)
-			return (FALSE);
+			return (free(rules->forks), free(rules->philos), FALSE);
 	}
 	else
 		rules->eat_count = -1;
 	if (rules->n_philo <= 0 || rules->time_to_die <= 0
 		|| rules->time_to_eat <= 0 || rules->time_to_sleep <= 0)
-		return (FALSE);
+		return (free(rules->forks), free(rules->philos), FALSE);
 	return (TRUE);
 }
 

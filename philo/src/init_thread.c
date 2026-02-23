@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:00:55 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/23 22:31:00 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/02/23 22:50:09 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static t_bool	create_philo_threads(t_rules *rules)
 		if (!init_philo(rules, i))
 		{
 			ft_putstr_fd("Error: meal_mutex initialization failed\n", 2);
-			cleanup_partial_philos(rules, i);
+			cleanup_on_thread_error(rules, i);
 			return (FALSE);
 		}
 		if (pthread_create(&(rules->philos[i].thread), NULL, routine,
@@ -31,7 +31,6 @@ static t_bool	create_philo_threads(t_rules *rules)
 		{
 			ft_putstr_fd("Error: pthread_create failed\n", 2);
 			pthread_mutex_destroy(&(rules->philos[i].meal_mutex));
-			cleanup_partial_philos(rules, i);
 			cleanup_on_thread_error(rules, i);
 			return (FALSE);
 		}
@@ -54,10 +53,10 @@ static t_bool	join_all_threads(t_rules *rules)
 	while (++i < rules->n_philo)
 		if (pthread_join(rules->philos[i].thread, NULL) != 0)
 			return (ft_putstr_fd("pthread_join failed", 2),
-				cleanup_on_thread_error(rules, i), FALSE);
+				cleanup_on_join_error(rules, i), FALSE);
 	if (pthread_join(rules->monitor_thread, NULL) != 0)
 		return (ft_putstr_fd("monitor thread join failed", 2),
-			cleanup_on_thread_error(rules, i), FALSE);
+			cleanup_on_join_error(rules, i), FALSE);
 	return (TRUE);
 }
 
