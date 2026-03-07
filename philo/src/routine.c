@@ -28,16 +28,16 @@ void	print_action(t_philo *philo, char *action)
 	pthread_mutex_unlock(&(rules->print_mutex));
 }
 
-static void	init_philo_state(t_philo *philo)
-{
-	pthread_mutex_lock(&(philo->meal_mutex));
-	philo->last_meal = ft_get_timestamp();
-	pthread_mutex_unlock(&(philo->meal_mutex));
-	pthread_mutex_lock(&(philo->rules->ready_mutex));
-	philo->rules->ready_count++;
-	pthread_mutex_unlock(&(philo->rules->ready_mutex));
-	if (philo->id % 2 == 1)
-		usleep(1000 + (philo->id * 100));
+static void	init_philo_state(t_philo *philo)  
+{  
+	if (philo->id % 2 == 1)  
+		usleep(1000);  
+	pthread_mutex_lock(&(philo->meal_mutex));  
+	philo->last_meal = ft_get_timestamp();  
+	pthread_mutex_unlock(&(philo->meal_mutex));  
+	pthread_mutex_lock(&(philo->rules->ready_mutex));  
+	philo->rules->ready_count++;  
+	pthread_mutex_unlock(&(philo->rules->ready_mutex));  
 }
 
 static int	check_death(t_rules *rules)
@@ -58,7 +58,7 @@ static void	philo_cycle(t_philo *philo)
 	print_action(philo, "is sleeping");
 	ft_precise_sleep(rules->time_to_sleep);
 	print_action(philo, "is thinking");
-	usleep(500 * (rules->n_philo / 10 + 1));
+	usleep(500);
 }
 
 void	*routine(void *arg)
