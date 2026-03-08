@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:23:59 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/02 18:24:02 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/03/08 11:00:02 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	wait_for_ready(t_rules *rules)
 		pthread_mutex_unlock(&(rules->ready_mutex));
 		if (ready >= rules->n_philo)
 			break ;
-		usleep(100);
+		usleep(10);
 	}
 }
 
@@ -35,13 +35,13 @@ static int	check_death(t_rules *rules, int i)
 	pthread_mutex_lock(&(rules->philos[i].meal_mutex));
 	if (now - rules->philos[i].last_meal > rules->time_to_die)
 	{
-		pthread_mutex_lock(&(rules->print_mutex));
-		printf("%lld %d died\n", now - rules->start_time, rules->philos[i].id
-			+ 1);
-		pthread_mutex_unlock(&(rules->print_mutex));
 		pthread_mutex_lock(&(rules->death_mutex));
 		rules->someone_died = TRUE;
 		pthread_mutex_unlock(&(rules->death_mutex));
+		pthread_mutex_lock(&(rules->print_mutex));
+		printf("%lld %d died\n", now - rules->start_time,
+			rules->philos[i].id + 1);
+		pthread_mutex_unlock(&(rules->print_mutex));
 		pthread_mutex_unlock(&(rules->philos[i].meal_mutex));
 		return (1);
 	}
@@ -86,7 +86,7 @@ static void	monitor_loop(t_rules *rules)
 				return ;
 		if (check_all_done(rules))
 			return ;
-		usleep(1000);
+		usleep(10);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:24:15 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/22 14:04:07 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/03/08 11:07:25 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,16 @@ void	print_action(t_philo *philo, char *action)
 	pthread_mutex_unlock(&(rules->print_mutex));
 }
 
-static void	init_philo_state(t_philo *philo)  
-{  
-	if (philo->id % 2 == 1)  
-		usleep(1000);  
-	pthread_mutex_lock(&(philo->meal_mutex));  
-	philo->last_meal = ft_get_timestamp();  
-	pthread_mutex_unlock(&(philo->meal_mutex));  
-	pthread_mutex_lock(&(philo->rules->ready_mutex));  
-	philo->rules->ready_count++;  
-	pthread_mutex_unlock(&(philo->rules->ready_mutex));  
+static void	init_philo_state(t_philo *philo)
+{
+	if (philo->id % 2 == 1)
+		usleep(philo->rules->time_to_eat * 1000);
+	pthread_mutex_lock(&(philo->meal_mutex));
+	philo->last_meal = ft_get_timestamp();
+	pthread_mutex_unlock(&(philo->meal_mutex));
+	pthread_mutex_lock(&(philo->rules->ready_mutex));
+	philo->rules->ready_count++;
+	pthread_mutex_unlock(&(philo->rules->ready_mutex));
 }
 
 static int	check_death(t_rules *rules)
