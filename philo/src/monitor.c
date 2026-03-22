@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:23:59 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/03/22 14:08:29 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/03/22 16:50:05 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,7 @@ static int	check_all_done(t_rules *rules)
 		pthread_mutex_unlock(&(rules->philos[i].meal_mutex));
 	}
 	if (rules->eat_count != -1 && done == rules->n_philo)
-	{
-		pthread_mutex_lock(&(rules->death_mutex));
-		rules->someone_died = TRUE;
-		pthread_mutex_unlock(&(rules->death_mutex));
 		return (1);
-	}
 	return (0);
 }
 

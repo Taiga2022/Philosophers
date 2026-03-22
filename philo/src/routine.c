@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:24:15 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/03/22 14:31:38 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/03/22 16:28:13 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ void	*routine(void *arg)
 	while (TRUE)
 	{
 		if (check_death(philo->rules))
+			break ;
+		if (has_eaten_enough(philo))
 			break ;
 		philo_cycle(philo);
 	}
