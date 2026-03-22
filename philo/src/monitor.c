@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:23:59 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/02 18:24:02 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/03/22 14:08:29 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	wait_for_ready(t_rules *rules)
+static void	wait_for_start(t_rules *rules)
 {
-	int	ready;
-
 	while (TRUE)
 	{
 		pthread_mutex_lock(&(rules->ready_mutex));
-		ready = rules->ready_count;
-		pthread_mutex_unlock(&(rules->ready_mutex));
-		if (ready >= rules->n_philo)
+		if (rules->start_flag)
+		{
+			pthread_mutex_unlock(&(rules->ready_mutex));
 			break ;
+		}
+		pthread_mutex_unlock(&(rules->ready_mutex));
 		usleep(100);
 	}
 }
@@ -31,8 +31,8 @@ static int	check_death(t_rules *rules, int i)
 {
 	long long	now;
 
-	now = ft_get_timestamp();
 	pthread_mutex_lock(&(rules->philos[i].meal_mutex));
+	now = ft_get_timestamp();
 	if (now - rules->philos[i].last_meal > rules->time_to_die)
 	{
 		pthread_mutex_lock(&(rules->print_mutex));
@@ -95,7 +95,7 @@ void	*monitor(void *arg)
 	t_rules	*rules;
 
 	rules = (t_rules *)arg;
-	wait_for_ready(rules);
+	wait_for_start(rules);
 	monitor_loop(rules);
 	return (NULL);
 }

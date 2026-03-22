@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 20:18:21 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/23 22:46:23 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/03/22 12:58:04 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_bool	init_main(int argc, char *argv[], t_rules *rules)
 	rules->time_to_sleep = ft_atoi(argv[4]);
 	rules->start_time = 0;
 	rules->someone_died = 0;
-	rules->ready_count = 0;
+	rules->start_flag = FALSE;
 	rules->forks = malloc(sizeof(pthread_mutex_t) * rules->n_philo);
 	if (!rules->forks)
 		return (FALSE);

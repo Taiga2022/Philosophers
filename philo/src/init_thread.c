@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:00:55 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/23 23:17:34 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/03/22 14:08:24 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static t_bool	create_philo_threads(t_rules *rules)
 	int	i;
 
 	i = -1;
-	rules->start_time = ft_get_timestamp();
 	while (++i < rules->n_philo)
 	{
 		if (!init_philo(rules, i))
@@ -36,6 +35,23 @@ static t_bool	create_philo_threads(t_rules *rules)
 		}
 	}
 	return (TRUE);
+}
+
+static void	signal_start(t_rules *rules)
+{
+	int	i;
+
+	rules->start_time = ft_get_timestamp();
+	i = -1;
+	while (++i < rules->n_philo)
+	{
+		pthread_mutex_lock(&(rules->philos[i].meal_mutex));
+		rules->philos[i].last_meal = rules->start_time;
+		pthread_mutex_unlock(&(rules->philos[i].meal_mutex));
+	}
+	pthread_mutex_lock(&(rules->ready_mutex));
+	rules->start_flag = TRUE;
+	pthread_mutex_unlock(&(rules->ready_mutex));
 }
 
 static t_bool	create_monitor_thread(t_rules *rules)
@@ -70,6 +86,7 @@ t_bool	init_thread(t_rules *rules)
 		cleanup_on_thread_error(rules, rules->n_philo);
 		return (FALSE);
 	}
+	signal_start(rules);
 	if (!join_all_threads(rules))
 		return (FALSE);
 	return (TRUE);

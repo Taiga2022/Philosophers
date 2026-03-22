@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 11:52:42 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/02/23 22:49:27 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/03/22 14:08:45 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_rules
 	t_philo				*philos;
 
 	pthread_mutex_t		ready_mutex;
-	int					ready_count;
+	t_bool				start_flag;
 }						t_rules;
 
 void					cleanup_partial_philos(t_rules *rules, int count);

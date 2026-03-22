@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tshimizu <tshimizu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 11:51:08 by tshimizu          #+#    #+#             */
-/*   Updated: 2025/11/02 14:32:20 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/03/22 14:23:20 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,20 @@ void	ft_precise_sleep(int time_in_ms)
 	start = ft_get_timestamp();
 	while ((ft_get_timestamp() - start) < time_in_ms)
 		usleep(100);
+}
+
+void	print_action(t_philo *philo, char *action)
+{
+	t_rules	*rules;
+	int		is_dead;
+
+	rules = philo->rules;
+	pthread_mutex_lock(&(rules->print_mutex));
+	pthread_mutex_lock(&(rules->death_mutex));
+	is_dead = rules->someone_died;
+	pthread_mutex_unlock(&(rules->death_mutex));
+	if (!is_dead)
+		printf("%lld %d %s\n", ft_get_timestamp() - rules->start_time, philo->id
+			+ 1, action);
+	pthread_mutex_unlock(&(rules->print_mutex));
 }

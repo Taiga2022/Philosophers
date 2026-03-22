@@ -6,53 +6,46 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:24:15 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/03/21 22:57:55 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/03/22 14:31:38 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	print_action(t_philo *philo, char *action)
+static void	wait_for_start(t_rules *rules)
 {
-	t_rules	*rules;
-	int		is_dead;
-
-	rules = philo->rules;
-	pthread_mutex_lock(&(rules->print_mutex));
-	pthread_mutex_lock(&(rules->death_mutex));
-	is_dead = rules->someone_died;
-	pthread_mutex_unlock(&(rules->death_mutex));
-	if (!is_dead)
-		printf("%lld %d %s\n", ft_get_timestamp() - rules->start_time, philo->id
-			+ 1, action);
-	pthread_mutex_unlock(&(rules->print_mutex));
+	while (TRUE)
+	{
+		pthread_mutex_lock(&(rules->ready_mutex));
+		if (rules->start_flag)
+		{
+			pthread_mutex_unlock(&(rules->ready_mutex));
+			break ;
+		}
+		pthread_mutex_unlock(&(rules->ready_mutex));
+		usleep(100);
+	}
 }
 
-static void	init_philo_state(t_philo *philo)
+static int	calc_delay(t_philo *philo)
 {
 	t_rules	*rules;
-	int		delay;
+	int		position;
 
 	rules = philo->rules;
-	delay = 0;
-	if (rules->n_philo > 2 && rules->n_philo % 2 == 0)
+	if (rules->n_philo <= 1)
+		return (0);
+	if (rules->n_philo % 2 == 0)
 	{
 		if (philo->id % 2 == 1)
-			delay = rules->time_to_eat * 1000;
+			return (rules->time_to_eat);
+		return (0);
 	}
-	else if (rules->n_philo > 2 && rules->n_philo % 2 == 1)
-	{
-		delay = (philo->id * 2 % rules->n_philo)
-			* (rules->time_to_eat * 1000 / (rules->n_philo / 2));
-	}
-	if (delay > 0)
-		usleep(delay);
-	pthread_mutex_lock(&(philo->meal_mutex));
-	philo->last_meal = ft_get_timestamp();
-	pthread_mutex_unlock(&(philo->meal_mutex));
-	pthread_mutex_lock(&(rules->ready_mutex));
-	rules->ready_count++;
-	pthread_mutex_unlock(&(rules->ready_mutex));
+	if (philo->id % 2 == 0)
+		position = philo->id / 2;
+	else
+		position = (rules->n_philo + 1) / 2 + philo->id / 2;
+	return (position * rules->time_to_eat / (rules->n_philo / 2));
 }
 
 static int	check_death(t_rules *rules)
@@ -74,8 +67,8 @@ static void	philo_cycle(t_philo *philo)
 	print_action(philo, "is sleeping");
 	ft_precise_sleep(rules->time_to_sleep);
 	print_action(philo, "is thinking");
-	think_time = rules->n_philo * (rules->time_to_eat
-			/ (rules->n_philo / 2)) - rules->time_to_eat - rules->time_to_sleep;
+	think_time = rules->n_philo * (rules->time_to_eat / (rules->n_philo / 2))
+		- rules->time_to_eat - rules->time_to_sleep;
 	if (think_time < 0)
 		think_time = 0;
 	if (think_time > 0)
@@ -87,9 +80,13 @@ static void	philo_cycle(t_philo *philo)
 void	*routine(void *arg)
 {
 	t_philo	*philo;
+	int		delay;
 
 	philo = (t_philo *)arg;
-	init_philo_state(philo);
+	wait_for_start(philo->rules);
+	delay = calc_delay(philo);
+	if (delay > 0)
+		ft_precise_sleep(delay);
 	if (philo->rules->n_philo == 1)
 		return (print_action(philo, "has taken a fork"), NULL);
 	while (TRUE)
