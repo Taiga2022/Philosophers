@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:23:59 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/03/22 16:50:05 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/03/22 18:30:02 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ static int	check_death(t_rules *rules, int i)
 	if (now - rules->philos[i].last_meal > rules->time_to_die)
 	{
 		pthread_mutex_lock(&(rules->print_mutex));
-		printf("%lld %d died\n", now - rules->start_time, rules->philos[i].id
-			+ 1);
-		pthread_mutex_unlock(&(rules->print_mutex));
 		pthread_mutex_lock(&(rules->death_mutex));
 		rules->someone_died = TRUE;
 		pthread_mutex_unlock(&(rules->death_mutex));
+		printf("%lld %d died\n", now - rules->start_time, rules->philos[i].id
+			+ 1);
+		pthread_mutex_unlock(&(rules->print_mutex));
 		pthread_mutex_unlock(&(rules->philos[i].meal_mutex));
 		return (1);
 	}

@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:24:15 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/03/22 16:28:13 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/03/22 18:32:22 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,13 @@ static void	philo_cycle(t_philo *philo)
 
 	rules = philo->rules;
 	eat(philo);
+	pthread_mutex_lock(&(philo->meal_mutex));
+	if (rules->eat_count != -1 && philo->meals_eaten >= rules->eat_count)
+	{
+		pthread_mutex_unlock(&(philo->meal_mutex));
+		return ;
+	}
+	pthread_mutex_unlock(&(philo->meal_mutex));
 	print_action(philo, "is sleeping");
 	ft_precise_sleep(rules->time_to_sleep);
 	print_action(philo, "is thinking");

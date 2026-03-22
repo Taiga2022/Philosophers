@@ -6,7 +6,7 @@
 /*   By: tshimizu <tshimizu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:24:29 by tshimizu          #+#    #+#             */
-/*   Updated: 2026/03/22 16:27:04 by tshimizu         ###   ########.fr       */
+/*   Updated: 2026/03/22 18:49:16 by tshimizu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static void	update_meal(t_philo *philo)
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&(philo->meal_mutex));
 }
+
 int	has_eaten_enough(t_philo *philo)
 {
 	int	enough;
@@ -60,8 +61,8 @@ void	eat(t_philo *philo)
 
 	rules = philo->rules;
 	take_forks(philo);
-	print_action(philo, "is eating");
 	update_meal(philo);
+	print_action(philo, "is eating");
 	ft_precise_sleep(rules->time_to_eat);
 	put_forks(philo);
 }
